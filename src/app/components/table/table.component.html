@@ -1,0 +1,130 @@
+<div class="Mat-Table-example">
+  <!-- start - table filter -->
+  <mat-form-field appearance="standard">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input />
+  </mat-form-field>
+  <!-- start - table filter -->
+  <!-- start example-table-container -->
+  <div class="example-table-container">
+    <table mat-table [dataSource]="orders" multiTemplateDataRows class="mat-elevation-z8" matSort cdkDropList
+      cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+      <!-- start - order table columns -->
+      <ng-container *ngFor="let column of orderColumnsToDisplay">
+        <ng-container *ngIf="column == 'selected'" matColumnDef="{{ column }}">
+          <th mat-header-cell *matHeaderCellDef>
+            <input type="checkbox" [(ngModel)]="data.allOrdersAreSelected"
+              (ngModelChange)="allOrdersAreSelectedChanged($event)" />
+          </th>
+          <td mat-cell *matCellDef="let order">
+            <input type="checkbox" [checked]="order[column]" />
+          </td>
+        </ng-container>
+        <ng-container *ngIf="column != 'selected'" matColumnDef="{{ column }}">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header cdkDrag>
+            {{ column }}
+          </th>
+          <td mat-cell *matCellDef="let order">{{ order[column] }}</td>
+        </ng-container>
+      </ng-container>
+      <!-- start - order table columns -->
+
+      <!-- start - Expanded Order to show packages -->
+      <ng-container matColumnDef="expandedOrder">
+        <td mat-cell *matCellDef="let order" [attr.colspan]="PackageColumnsToDisplay.length">
+          <div class="example-element-detail" [@detailExpand]="order == expandedOrder ? 'expanded' : 'collapsed'">
+           
+            <!-- start - packages table -->
+            <table mat-table [dataSource]="order.packages" multiTemplateDataRows class="mat-elevation-z8">
+              <ng-container *ngFor="let column of PackageColumnsToDisplay">
+                <ng-container *ngIf="column == 'selected'" matColumnDef="{{ column }}">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <input type="checkbox" [(ngModel)]="order.allPackagesAreSelected"
+                    (ngModelChange)="allPackagesAreSelectedChanged(order, $event)"/>
+                  </th>
+                  <td mat-cell *matCellDef="let package">
+                    <input type="checkbox" [checked]="package[column]" />
+                  </td>
+                </ng-container>
+                <ng-container *ngIf="column != 'selected'" matColumnDef="{{ column }}">
+                  <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+                  <td mat-cell *matCellDef="let package">
+                    {{ package[column] }}
+                  </td>
+                </ng-container>
+              </ng-container>
+              <!-- start - Expanded Package to show products-->
+              <ng-container matColumnDef="expandedPackage">
+                <td mat-cell *matCellDef="let package" [attr.colspan]="PackageColumnsToDisplay.length">
+                  <div class="example-element-detail" [@detailExpand]="
+                                package == expandedPackage ? 'expanded' : 'collapsed'
+                                ">
+                    <table mat-table [dataSource]="package.products" class="mat-elevation-z8">
+                      <ng-container *ngFor="let column of ProductColumnsToDisplay">
+                        <ng-container *ngIf="column == 'selected'" matColumnDef="{{ column }}">
+                          <th mat-header-cell *matHeaderCellDef>
+                            <input type="checkbox" [checked]="package.allProductAreSelected" />
+                          </th>
+                          <td mat-cell *matCellDef="let product">
+                            <input type="checkbox" [checked]="product[column]" />
+                          </td>
+                        </ng-container>
+                        <ng-container *ngIf="column != 'selected'" matColumnDef="{{ column }}">
+                          <th mat-header-cell *matHeaderCellDef>
+                            {{ column }}
+                          </th>
+                          <td mat-cell *matCellDef="let product">
+                            {{ product[column] }}
+                          </td>
+                        </ng-container>
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="ProductColumnsToDisplay"></tr>
+                      <tr mat-row *matRowDef="let product; columns: ProductColumnsToDisplay" class="example-element-row"></tr>
+                    </table>
+                  </div>
+                </td>
+              </ng-container>
+              <!-- end - Expanded Package -->
+              <tr mat-header-row *matHeaderRowDef="PackageColumnsToDisplay"></tr>
+              <tr mat-row *matRowDef="let package; columns: PackageColumnsToDisplay" class="example-element-row"
+                [class.example-expanded-row]="expandedPackage === package"
+                [class.demo-row-is-clicked]="clickedPackages.has(package)" (click)="updateExpandedPackage(package)"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedPackage']" class="example-detail-row"></tr>
+            </table>
+            <!-- end - packages table -->
+          
+        </div>
+        </td>
+      </ng-container>
+      <!-- end - Expanded Package -->
+
+      <!-- start - order table rows -->
+      <tr mat-header-row *matHeaderRowDef="orderColumnsToDisplay; sticky:true"></tr>
+      <tr mat-row *matRowDef="let order; columns: orderColumnsToDisplay" class="example-element-row"
+        [class.example-expanded-row]="expandedOrder === order" [class.demo-row-is-clicked]="clickedOrders.has(order)"
+        (click)="updateExpandedOrder(order)"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedOrder']" class="example-detail-row"></tr>
+      <!-- end - order table rows -->
+
+    </table>
+  </div>
+  <!-- end - example-table-container -->
+  <!-- start - mat-paginator -->
+  <mat-paginator [pageSizeOptions]="[1, 2, 3, 4, 5]" [length]="data.orders.length" [pageSize]="data.orders.length"
+    (page)="onPageChanged($event)" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+  <!-- end - mat-paginator -->
+  <!-- start - example-button-row -->
+  <div class="example-button-row">
+    <div class="demo-button-container">
+      <button mat-stroked-button (click)="addData()" class="demo-button" color="primary">
+        Add Row
+      </button>
+      <button mat-stroked-button [disabled]="!data.orders.length" (click)="removeData()" class="demo-button"
+        color="warn">
+        Remove Last Row
+      </button>
+    </div>
+  </div>
+  <!-- end - example-button-row -->
+</div>
