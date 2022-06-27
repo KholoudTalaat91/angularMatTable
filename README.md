@@ -46,7 +46,7 @@ You will find an attached demo of 3 Levels hierarchical Table with expandable ro
  
 ## Usage: 
 
-•	Download the attached file. 
+•	Download the attached file.
 •	In demo, folder Run npm install 
 •	Run ng serve –open  
 
