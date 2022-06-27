@@ -1,9 +1,7 @@
-// angular 
-import {
-  Component,
-  ElementRef,
-  ViewChild
-} from '@angular/core';
+// angular
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+// services
+import { MainService } from '../../services/main/main.service';
 // angular Material
 import {
   animate,
@@ -12,32 +10,20 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import {
-  MatTable
-} from '@angular/material/table';
-import {
-  MatTableDataSource
-} from '@angular/material/table';
-import {
-  MatSort
-} from '@angular/material/sort';
-import {
-  MatPaginator
-} from '@angular/material/paginator';
-import {
-  CdkDragDrop,
-  moveItemInArray
-} from '@angular/cdk/drag-drop';
+import { MatTable } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 // Data Model
 import {
   PeriodicElement,
-  orderDate,
+  orderData,
   orderOfPackages,
   packageOfProducts,
-  product
+  product,
 } from '../../dataModels/table-models';
-
 
 /**
  * Table with expandable rows
@@ -69,227 +55,55 @@ import {
     ]),
   ],
 })
-export class TableComponent {
-  @ViewChild(MatTable) table!: MatTable < PeriodicElement > ;
+export class TableComponent implements OnInit  {
+  @ViewChild(MatTable) table!: MatTable<PeriodicElement>;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('input') input!: ElementRef;
-  data: orderDate = {
-    orders: [{
-        orderId: '#1',
-        orderName: 'orderName #1',
-        orderCost: 45,
-        selected: false,
-        allPackagesAreSelected:false,
-        packages: [{
-            packageId: "#1.1",
-            packageName: 'PackageName #1.1',
-            packageCost: 15,
-            selected: false,
-            allProductAreSelected:false,
-            products: [{
-                productId: '#1.1.1',
-                productName: 'productName #1.1.1',
-                productCost: 5,
-                selected: false,
-              },
-              {
-                productId: '#1.1.2',
-                productName: 'productName #1.1.2',
-                productCost: 2,
-                selected: false,
-              },
-              {
-                productId: '#1.1.3',
-                productName: 'productName #1.1.3',
-                productCost: 8,
-                selected: false,
-              }
-            ],
-          },
-          {
-            packageId: "#1.2",
-            packageName: 'PackageName #1.2',
-            packageCost: 30,
-            selected: false,
-            allProductAreSelected:false,
-            products: [{
-                productId: '#1.2.1',
-                productName: 'productName #1.2.1',
-                productCost: 10,
-                selected: false,
-              },
-              {
-                productId: '#1.2.2',
-                productName: 'productName #1.1.2',
-                productCost: 12,
-                selected: false,
-              },
-              {
-                productId: '#1.1.3',
-                productName: 'productName #1.2.3',
-                productCost: 8,
-                selected: false,
-              }
-            ],
-          }
-
-        ],
-      },
-      {
-        orderId: '#2',
-        orderName: 'orderName #2',
-        orderCost: 25,
-        selected: false,
-        allPackagesAreSelected:false,
-        packages: [{
-            packageId: "#2.1",
-            packageName: 'PackageName #2.1',
-            packageCost: 10,
-            selected: false,
-            allProductAreSelected:false,
-            products: [{
-                productId: '#2.1.1',
-                productName: 'productName #2.1.1',
-                productCost: 5,
-                selected: false,
-              },
-              {
-                productId: '#2.1.2',
-                productName: 'productName #2.1.2',
-                productCost: 3,
-                selected: false,
-              },
-              {
-                productId: '#2.1.3',
-                productName: 'productName #2.1.3',
-                productCost: 2,
-                selected: false,
-              }
-            ],
-          },
-          {
-            packageId: "#2.2",
-            packageName: 'PackageName #2.2',
-            packageCost: 15,
-            selected: false,
-            allProductAreSelected:false,
-            products: [{
-                productId: '#2.2.1',
-                productName: 'productName #2.2.1',
-                productCost: 5,
-                selected: false,
-              },
-              {
-                productId: '#2.2.2',
-                productName: 'productName #2.2.2',
-                productCost: 5,
-                selected: false,
-              },
-              {
-                productId: '#2.2.3',
-                productName: 'productName #2.2.3',
-                productCost: 5,
-                selected: false,
-              }
-            ],
-          }
-
-        ],
-      },
-      {
-        orderId: '#3',
-        orderName: 'orderName #3',
-        orderCost: 105,
-        selected: false,
-        allPackagesAreSelected:false,
-        packages: [{
-            packageId: "#3.1",
-            packageName: 'PackageName #3.1',
-            packageCost: 30,
-            selected: false,
-            allProductAreSelected:false,
-            products: [{
-                productId: '#3.1.1',
-                productName: 'productName #3.1.1',
-                productCost: 15,
-                selected: false,
-              },
-              {
-                productId: '#3.1.2',
-                productName: 'productName #3.1.2',
-                productCost: 10,
-                selected: false,
-              },
-              {
-                productId: '#3.1.3',
-                productName: 'productName #3.1.3',
-                productCost: 5,
-                selected: false,
-              }
-            ],
-          },
-          {
-            packageId: "#3.2",
-            packageName: 'PackageName #3.2',
-            packageCost: 75,
-            selected: false,
-            allProductAreSelected:false,
-            products: [{
-                productId: '#3.2.1',
-                productName: 'productName #3.2.1',
-                productCost: 30,
-                selected: false,
-              },
-              {
-                productId: '#3.2.2',
-                productName: 'productName #3.2.2',
-                productCost: 25,
-                selected: false,
-              },
-              {
-                productId: '#3.2.3',
-                productName: 'productName #3.2.3',
-                productCost: 20,
-                selected: false,
-              }
-            ],
-          }
-
-        ],
-      },
-    ],
-    allOrdersAreSelected: false,
-  }
+  data: orderData = new orderData;
   orders = new MatTableDataSource(this.data.orders);
-  orderColumnsToDisplay = [
-    'selected',
-    'orderId',
-    'orderName',
-    'orderCost',
-  ];
+  orderColumnsToDisplay = ['selected', 'orderId', 'orderName', 'orderCost'];
   expandedOrder: orderOfPackages | null = new orderOfPackages();
   PackageColumnsToDisplay = [
     'selected',
     'packageId',
     'packageName',
-    'packageCost'
+    'packageCost',
   ];
   expandedPackage: packageOfProducts | null = new packageOfProducts();
   ProductColumnsToDisplay = [
     'selected',
     'productId',
     'productName',
-    'productCost'
+    'productCost',
   ];
-  clickedOrders = new Set<orderOfPackages>(); 
+  clickedOrders = new Set<orderOfPackages>();
   clickedPackages = new Set<packageOfProducts>();
+  pageSize: number = 3;
   /**
    * Methods
    */
-  constructor() {}
-  ngOnInit(): void {}
-  ngAfterViewInit(): void {
+  constructor(private mainService: MainService) {}
+  ngOnInit(): void {
+    this.loadOrdersData();
+    this.getOrdersData();
+  }
+  ngAfterViewInit(): void {}
+  	
+  loadOrdersData() {
+    this.mainService.loadOrders().subscribe((res) => {
+      this.mainService.updateOrders(res);
+    });
+  }
+  getOrdersData() {
+    this.mainService.getOrders().subscribe((res) => {
+      this.data = res;
+      this.initiateMatTable();
+    });
+  }
+  initiateMatTable() {
+    this.orders = new MatTableDataSource(this.data.orders);
+    this.table ? this.table.renderRows() : '';
     this.orders.paginator = this.paginator;
     this.orders.sort = this.sort;
   }
@@ -299,36 +113,36 @@ export class TableComponent {
       orderName: 'orderName new',
       orderCost: 5,
       selected: false,
-      allPackagesAreSelected:false,
-      packages: [{
-          packageId: "new",
+      allPackagesAreSelected: false,
+      packages: [
+        {
+          packageId: 'new',
           packageName: 'PackageName new',
           packageCost: 5,
           selected: false,
-          allProductAreSelected:false,
-          products: [{
-            productId: 'new',
-            productName: 'productName new',
-            productCost: 5,
-            selected: true,
-          }],
-        }
-
+          allProductAreSelected: false,
+          products: [
+            {
+              productId: 'new',
+              productName: 'productName new',
+              productCost: 5,
+              selected: true,
+            },
+          ],
+        },
       ],
     };
     this.data.orders = [...this.data.orders, order];
+    this.mainService.updateOrders(this.data);
     this.input.nativeElement.value = '';
-    console.log(this.input);
-    this.orders = new MatTableDataSource(this.data.orders);
   }
+
   removeData() {
     this.data.orders.pop();
-    this.orders = new MatTableDataSource(this.data.orders);
+    this.mainService.updateOrders(this.data);
     this.input.nativeElement.value = '';
-    console.log(this.input);
-
-    this.table.renderRows();
   }
+  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.orders.filter = filterValue.trim().toLowerCase();
@@ -339,7 +153,7 @@ export class TableComponent {
   onPageChanged(e: any) {
     console.log(e);
   }
-  drop(event: CdkDragDrop < string[] > ) {
+  drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(
       this.orderColumnsToDisplay,
       event.previousIndex,
@@ -348,34 +162,35 @@ export class TableComponent {
   }
 
   allOrdersAreSelectedChanged(e: any) {
-    this.data.orders.forEach(order => order.selected = e);
+    this.data.orders.forEach((order) => (order.selected = e));
   }
-  allPackagesAreSelectedChanged(order:orderOfPackages, e: any){
-    order.packages.forEach(orderPackage=>orderPackage.selected = e)
+  allPackagesAreSelectedChanged(order: orderOfPackages, e: any) {
+    order.packages.forEach((orderPackage) => (orderPackage.selected = e));
   }
 
-  updateExpandedOrder(order:orderOfPackages){
+  updateExpandedOrder(order: orderOfPackages) {
     this.expandedOrder = this.expandedOrder === order ? null : order;
     this.expandedPackage = null;
-    this.updateClickedOrders(order)
+    this.updateClickedOrders(order);
   }
 
-  updateClickedOrders(order:orderOfPackages){
+  updateClickedOrders(order: orderOfPackages) {
     this.clickedOrders.clear();
-    if(this.expandedOrder === order){
-      this.clickedOrders.add(order)
+    if (this.expandedOrder === order) {
+      this.clickedOrders.add(order);
     }
   }
 
-  updateExpandedPackage(packageOfProducts:packageOfProducts){
-    this.expandedPackage = this.expandedPackage === packageOfProducts ? null : packageOfProducts
-    this.updateClickedPackages(packageOfProducts)
+  updateExpandedPackage(packageOfProducts: packageOfProducts) {
+    this.expandedPackage =
+      this.expandedPackage === packageOfProducts ? null : packageOfProducts;
+    this.updateClickedPackages(packageOfProducts);
   }
 
-  updateClickedPackages(packageOfProducts:packageOfProducts){
+  updateClickedPackages(packageOfProducts: packageOfProducts) {
     this.clickedPackages.clear();
-    if(this.expandedPackage === packageOfProducts){
-      this.clickedPackages.add(packageOfProducts)
+    if (this.expandedPackage === packageOfProducts) {
+      this.clickedPackages.add(packageOfProducts);
     }
   }
 }

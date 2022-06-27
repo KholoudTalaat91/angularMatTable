@@ -43,6 +43,8 @@ import {
   MatCheckboxModule
 } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
+import { MainService } from './services/main/main.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -53,6 +55,7 @@ import { FormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MatTableModule,
     MatPaginatorModule,
     MatFormFieldModule,
@@ -63,7 +66,7 @@ import { FormsModule } from '@angular/forms';
     MatCheckboxModule,
     FormsModule
   ],
-  providers: [],
+  providers: [MainService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

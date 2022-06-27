@@ -1,0 +1,56 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+// Specify "Montserrat" as the default font family for all levels.
+// $my-custom-level: mat.define-typography-level(
+//   $font-family: Roboto,
+//   $font-weight: 400,
+//   $font-size: 1rem,
+//   $line-height: 1,
+//   $letter-spacing: normal,
+// )
+$Logistic-typography: mat.define-typography-config(
+   $font-family: 'Montserrat',
+  $subheading-2: mat.define-typography-level(  
+    $font-family: 'Montserrat',
+  $font-weight: 500,
+  $font-size: 16px,
+  $line-height: normal,
+  $letter-spacing: normal
+  )
+);
+@include mat.core($Logistic-typography);
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$LogisticSuite-primary: mat.define-palette(mat.$indigo-palette);
+$LogisticSuite-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+// $Logistic-typography: mat.define-typography-config(
+//   // Specify "Montserrat" as the default font family for all levels.
+//   $font-family: 'Montserrat',
+// );
+// The warn palette is optional (defaults to red).
+$LogisticSuite-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$LogisticSuite-theme: mat.define-light-theme((
+  color: (
+    primary: $LogisticSuite-primary,
+    accent: $LogisticSuite-accent,
+    warn: $LogisticSuite-warn,
+  ),
+  typography: $Logistic-typography,
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($LogisticSuite-theme);
+

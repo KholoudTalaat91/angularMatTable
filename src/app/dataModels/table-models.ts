@@ -7,7 +7,7 @@ export class PeriodicElement {
   selected: boolean = false;
 }
 
-export class orderDate {
+export class orderData {
  orders : orderOfPackages[] = [];
  allOrdersAreSelected: boolean = false
 //  allPackagesAreSelected: boolean = false
