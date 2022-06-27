@@ -25,3 +25,28 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+You will find an attached demo of 3 Levels hierarchical Table with expandable rows: 
+  1.	Orders 
+    a.	Packages 
+      i.	Products 
+ 
+## Features: 
+
+1.	Filtering: text input on change event update table data and shows only the matched data. 
+2.	Adding and removing data: using an array-based datasource to push and remove rows of data. 
+3.	Expandable rows: to show orders, orders of packages, and packages of products. 
+4.	dynamically template Table with columns defined using ngFor instead of statically written in the template. 
+5.	Sorting: sorting on table header ascending and descending. 
+6.	Pagination: add table pagination that defines a number of shown rows with no need to hit sever every time and support last and first not only next and previous. 
+7.	Re-orderable columns: drag and drop on table header to reorder table columns 
+8.	Event handlers and properties: Binding event handlers and properties to the table rows such as add classes on click and add row on click. 
+9.	Selection: Adding a checkbox on columns headers to toggle between Select All and Deselect All and a checkbox on each row to select certain orders, packages, and products. 
+10.	Sticky header: table header are always in the view port on scroll. 
+ 
+## Usage: 
+
+•	Download the attached file. 
+•	In demo, folder Run npm install 
+•	Run ng serve –open  
+
